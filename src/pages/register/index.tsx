@@ -39,7 +39,7 @@ function Register() {
           </FormGroup>
           <FormGroup>
             <Label>Password</Label>
-            <Input name='password' required disabled={loading} type='password' placeholder='password (more than 6 chars)' />
+            <Input name='password' minLength={6} required disabled={loading} type='password' placeholder='password (more than 6 chars)' />
           </FormGroup>
           {error && <div className='notification'>{error.message}</div>}
           <FormGroup>
