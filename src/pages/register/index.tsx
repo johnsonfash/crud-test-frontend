@@ -1,21 +1,19 @@
 import { useMutation } from '@apollo/client';
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button, Form, FormGroup, Input, Label } from 'reactstrap'
+import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap'
 import { REGISTER } from '../../graphql/onboarding';
 import { FormHandler } from '../../services/form';
 
 function Register() {
-  const [register, { loading, error, data }] = useMutation(REGISTER);
-
   const router = useNavigate();
-
-  useEffect(() => {
-    if (data) {
-      // router('/')
+  const [register, { loading, error }] = useMutation(REGISTER, {
+    onCompleted: (val) => {
+      if (val) {
+        router('/login')
+      }
     }
-    console.log(data)
-  }, [data])
+  });
 
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -34,19 +32,21 @@ function Register() {
           <h3 className="mb-3">Register</h3>
           <FormGroup>
             <Label>Name</Label>
-            <Input name='name' type='text' placeholder='e.g John Doe' />
+            <Input name='name' disabled={loading} type='text' placeholder='e.g John Doe' />
           </FormGroup>
           <FormGroup>
             <Label>Email</Label>
-            <Input type='email' name='email' placeholder='e.g you@example.com' />
+            <Input type='email' disabled={loading} name='email' placeholder='e.g you@example.com' />
           </FormGroup>
           <FormGroup>
             <Label>Password</Label>
-            <Input name='password' type='password' placeholder='e.g you@example.com' />
+            <Input name='password' disabled={loading} type='password' placeholder='e.g you@example.com' />
           </FormGroup>
           {error && <div className='notification'>{error.message}</div>}
           <FormGroup>
-            <Button block color='success'>Register</Button>
+            <Button disabled={loading} block color='success'>
+              {loading && <Spinner size='sm' />} Register
+            </Button>
           </FormGroup>
           <div className="text-center">
             <Link className="" to='/login'>Login</Link>
