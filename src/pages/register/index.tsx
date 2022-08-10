@@ -31,15 +31,15 @@ function Register() {
           <h3 className="mb-3">Register</h3>
           <FormGroup>
             <Label>Name</Label>
-            <Input name='name' disabled={loading} type='text' placeholder='e.g John Doe' />
+            <Input name='name' required disabled={loading} type='text' placeholder='e.g John Doe' />
           </FormGroup>
           <FormGroup>
             <Label>Email</Label>
-            <Input type='email' disabled={loading} name='email' placeholder='e.g you@example.com' />
+            <Input type='email' required disabled={loading} name='email' placeholder='e.g you@example.com' />
           </FormGroup>
           <FormGroup>
             <Label>Password</Label>
-            <Input name='password' disabled={loading} type='password' placeholder='e.g you@example.com' />
+            <Input name='password' required disabled={loading} type='password' placeholder='password (more than 6 chars)' />
           </FormGroup>
           {error && <div className='notification'>{error.message}</div>}
           <FormGroup>
