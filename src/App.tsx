@@ -3,6 +3,7 @@ import { BrowserRouter, Routes as Switch, Route, useLocation, Navigate, useNavig
 import Dashboard from "./components/dashboard";
 import Loader from "./components/loader";
 import Login from "./pages/login";
+import Page404 from "./pages/page404";
 import Register from "./pages/register";
 import { goodToken } from "./services/token";
 
@@ -57,6 +58,7 @@ function App() {
         <Route path="/register" element={<Public component={Register} />} />
         <Route path="/login" element={<Public component={Login} />} />
         <Route path="/*" element={<Private component={Dashboard} />} />
+        <Route path="/*" element={<Public component={Page404} />} />
       </Switch>
     </BrowserRouter>
   );

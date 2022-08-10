@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Form, FormGroup, Input, Label, Spinner } from 'reactstrap'
 import { REGISTER } from '../../graphql/onboarding';
@@ -14,7 +14,6 @@ function Register() {
       }
     }
   });
-
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     const data = FormHandler(e, ['email', 'password', 'name']);
