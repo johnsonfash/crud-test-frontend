@@ -1,25 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes as Switch, Route, useLocation, Navigate, useNavigate } from "react-router-dom";
+import Dashboard from "./components/dashboard";
+import Loader from "./components/loader";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import { goodToken } from "./services/token";
+
+const Public = ({ component: Component }: { component: React.FC }) => {
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const router = useNavigate();
+
+  useEffect(() => {
+    window && window.scrollTo(0, 0);
+    const auth = async () => {
+      const isGood = await goodToken();
+      setLoading(false)
+      if (isGood) {
+        router("/");
+      }
+    };
+    auth();
+  }, [location, router]);
+
+  return loading ? <Loader /> : <Component />
+}
+
+const Private = ({ component: Component }: { component: React.FC }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    window && window.scrollTo(0, 0);
+    const auth = async () => {
+      setLoading(true);
+      const isGood = await goodToken();
+      if (isGood) {
+        setError(false)
+      } else {
+        setError(true)
+      }
+      setLoading(false)
+    }
+    auth();
+
+  }, [location]);
+
+  return loading ? <Loader /> : error ? <Navigate to="/login" /> : <Component />;
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/register" element={<Public component={Register} />} />
+        <Route path="/login" element={<Public component={Login} />} />
+        <Route path="/*" element={<Private component={Dashboard} />} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
